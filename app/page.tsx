@@ -10,7 +10,8 @@ import { navItems } from "@/data";
 import Image from "next/image";
 import { FaHome } from "react-icons/fa";
 import { FaH } from "react-icons/fa6";
-import Terrain from "../Components/background/background";
+// import Terrain from "../Components/background/background";
+import Terrain from "@/components/background/background";
 
 export default function Home() {
   return (
