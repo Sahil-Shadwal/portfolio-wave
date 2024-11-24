@@ -11,7 +11,11 @@ import Image from "next/image";
 import { FaHome } from "react-icons/fa";
 import { FaH } from "react-icons/fa6";
 // import Terrain from "../Components/background/background";
-import Terrain from "@/components/background/background";
+// import Terrain from "@/components/background/background";
+const Terrain = dynamic(() => import("../components/background/background"), {
+  ssr: false,
+});
+import dynamic from "next/dynamic";
 
 export default function Home() {
   return (
