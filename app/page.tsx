@@ -10,22 +10,22 @@ import { navItems } from "@/data";
 import Image from "next/image";
 import { FaHome } from "react-icons/fa";
 import { FaH } from "react-icons/fa6";
-// import Terrain from "../Components/background/background";
-// import Terrain from "@/components/background/background";
-const Terrain = dynamic(
+import dynamic from "next/dynamic";
+
+// Dynamically import the Terrain component with SSR disabled
+const TerrainNoSSR = dynamic(
   () => import("../components/background/background.tsx"),
   {
     ssr: false,
   }
 );
-import dynamic from "next/dynamic";
 
 export default function Home() {
   return (
     <div className="relative">
       {/* Background Animation Container */}
       <div className="fixed inset-0 z-0">
-        <Terrain />
+        <TerrainNoSSR />
         {/* <BackgroundGradientAnimation /> */}
       </div>
 

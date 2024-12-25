@@ -87,8 +87,29 @@ export const BackgroundGradientAnimation = ({
     }
   };
 
+  // Return a simple div during SSR
+  if (typeof window === 'undefined') {
+    return (
+      <div
+        style={{
+          background: gradientBackgroundStart,
+          width: '100%',
+          height: '100%'
+        }}
+      />
+    );
+  }
+
   if (!mounted) {
-    return null; // or a loading state
+    return (
+      <div
+        style={{
+          background: gradientBackgroundStart,
+          width: '100%',
+          height: '100%'
+        }}
+      />
+    );
   }
 
   return (

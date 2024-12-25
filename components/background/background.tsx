@@ -243,12 +243,21 @@ const Terrain: React.FC = () => {
     };
   }, [initScene]);
 
-  // Return null during SSR
+  // Return a loading placeholder during mount
   if (typeof window === 'undefined') {
-    return null;
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100vh',
+          background: 'rgb(8, 0, 36)'
+        }}
+      />
+    );
   }
 
   return <canvas className="webgl" />;
 };
 
+// Make sure to export as default
 export default Terrain;
