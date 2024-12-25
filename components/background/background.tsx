@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useCallback, useMemo, useLayoutEffect } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
@@ -42,11 +42,9 @@ const Terrain: React.FC = () => {
   );
 
   const createTerrainTexture = useCallback((config: TerrainConfig) => {
-    if (typeof document === 'undefined') return null;
+    if (typeof window === 'undefined') return null;
 
-    const canvas = document.createElement("canvas");
-    canvas.width = config.texture.width;
-    canvas.height = config.texture.height;
+    const canvas = new OffscreenCanvas(config.texture.width, config.texture.height);
     const context = canvas.getContext("2d");
 
     if (!context) return null;
@@ -88,9 +86,15 @@ const Terrain: React.FC = () => {
   }, []);
 
   const initScene = useCallback(() => {
-    if (typeof document === 'undefined') return null;
+    if (typeof window === 'undefined') return null;
 
-    const canvas = document.querySelector("canvas.webgl") as HTMLCanvasElement;
+    let canvas = document.querySelector("canvas.webgl") as HTMLCanvasElement;
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.className = 'webgl';
+      document.body.appendChild(canvas);
+    }
+
     const scene = new THREE.Scene();
 
     // Optimize renderer settings
@@ -139,6 +143,8 @@ const Terrain: React.FC = () => {
   }, [terrainConfig, createTerrainTexture]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const sceneData = initScene();
     if (!sceneData) return;
 
@@ -236,6 +242,11 @@ const Terrain: React.FC = () => {
       scene.remove(mesh);
     };
   }, [initScene]);
+
+  // Return null during SSR
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   return <canvas className="webgl" />;
 };

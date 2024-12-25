@@ -41,32 +41,26 @@ export const BackgroundGradientAnimation = ({
   const [tgY, setTgY] = useState(0);
   const [isSafari, setIsSafari] = useState(false);
 
+  // Create a style object for initial CSS variables
+  const cssVars = {
+    "--gradient-background-start": gradientBackgroundStart,
+    "--gradient-background-end": gradientBackgroundEnd,
+    "--first-color": firstColor,
+    "--second-color": secondColor,
+    "--third-color": thirdColor,
+    "--fourth-color": fourthColor,
+    "--fifth-color": fifthColor,
+    "--pointer-color": pointerColor,
+    "--size": size,
+    "--blending-value": blendingValue,
+  } as React.CSSProperties;
+
   useEffect(() => {
     setMounted(true);
-    // Move Safari detection to client-side
-    setIsSafari(/^((?!chrome|android).)*safari/i.test(window.navigator.userAgent));
+    if (typeof window !== 'undefined') {
+      setIsSafari(/^((?!chrome|android).)*safari/i.test(window.navigator.userAgent));
+    }
   }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
-    document.body.style.setProperty(
-      "--gradient-background-start",
-      gradientBackgroundStart
-    );
-    document.body.style.setProperty(
-      "--gradient-background-end",
-      gradientBackgroundEnd
-    );
-    document.body.style.setProperty("--first-color", firstColor);
-    document.body.style.setProperty("--second-color", secondColor);
-    document.body.style.setProperty("--third-color", thirdColor);
-    document.body.style.setProperty("--fourth-color", fourthColor);
-    document.body.style.setProperty("--fifth-color", fifthColor);
-    document.body.style.setProperty("--pointer-color", pointerColor);
-    document.body.style.setProperty("--size", size);
-    document.body.style.setProperty("--blending-value", blendingValue);
-  }, [mounted, gradientBackgroundStart, gradientBackgroundEnd, firstColor, secondColor, thirdColor, fourthColor, fifthColor, pointerColor, size, blendingValue]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -99,6 +93,7 @@ export const BackgroundGradientAnimation = ({
 
   return (
     <div
+      style={cssVars}
       className={cn(
         "h-screen w-screen relative overflow-hidden top-0 left-0 bg-[linear-gradient(40deg,var(--gradient-background-start),var(--gradient-background-end))]",
         containerClassName
