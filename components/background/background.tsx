@@ -41,6 +41,8 @@ const Terrain: React.FC = () => {
   );
 
   const createTerrainTexture = useCallback((config: TerrainConfig) => {
+    if (typeof document === 'undefined') return null;
+
     const canvas = document.createElement("canvas");
     canvas.width = config.texture.width;
     canvas.height = config.texture.height;
@@ -85,6 +87,8 @@ const Terrain: React.FC = () => {
   }, []);
 
   const initScene = useCallback(() => {
+    if (typeof document === 'undefined') return null;
+
     const canvas = document.querySelector("canvas.webgl") as HTMLCanvasElement;
     const scene = new THREE.Scene();
 
@@ -134,7 +138,10 @@ const Terrain: React.FC = () => {
   }, [terrainConfig, createTerrainTexture]);
 
   useEffect(() => {
-    const { scene, renderer, geometry, material, mesh, texture } = initScene();
+    const sceneData = initScene();
+    if (!sceneData) return;
+
+    const { scene, renderer, geometry, material, mesh, texture } = sceneData;
 
     // Camera setup
     const camera = new THREE.PerspectiveCamera(
