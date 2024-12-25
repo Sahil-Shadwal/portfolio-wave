@@ -11,22 +11,14 @@ import Image from "next/image";
 import { FaHome } from "react-icons/fa";
 import { FaH } from "react-icons/fa6";
 import dynamic from "next/dynamic";
-
-// Dynamically import the Terrain component with SSR disabled
-const TerrainNoSSR = dynamic(
-  () => import("../components/background/background.tsx"),
-  {
-    ssr: false,
-  }
-);
+import Terrain from "@/components/background/client-terrain";
 
 export default function Home() {
   return (
     <div className="relative">
       {/* Background Animation Container */}
       <div className="fixed inset-0 z-0">
-        <TerrainNoSSR />
-        {/* <BackgroundGradientAnimation /> */}
+        <Terrain />
       </div>
 
       {/* Content Container */}

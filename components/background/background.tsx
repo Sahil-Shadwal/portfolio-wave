@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useCallback, useMemo, useLayoutEffect } from "react";
+import React, { useEffect, useCallback, useMemo, useLayoutEffect, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
@@ -24,6 +24,12 @@ interface TerrainConfig {
 }
 
 const Terrain: React.FC = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Memoize configurations
   const terrainConfig = useMemo<TerrainConfig>(
     () => ({
@@ -244,13 +250,13 @@ const Terrain: React.FC = () => {
   }, [initScene]);
 
   // Return a loading placeholder during mount
-  if (typeof window === 'undefined') {
+  if (!isClient) {
     return (
       <div
         style={{
           width: '100%',
           height: '100vh',
-          background: 'rgb(8, 0, 36)'
+          background: 'rgb(8, 0, 36)',
         }}
       />
     );
