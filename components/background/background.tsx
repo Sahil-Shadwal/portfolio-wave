@@ -204,7 +204,7 @@ const Terrain: React.FC = () => {
       if (deltaTime > interval) {
         lastTime = currentTime - (deltaTime % interval);
 
-        if (!document.hidden) {
+        if (typeof document !== 'undefined' && !document.hidden) {
           const elapsedTime = clock.getElapsedTime();
           if (material.uniforms) {
             material.uniforms.uTime.value = elapsedTime;
